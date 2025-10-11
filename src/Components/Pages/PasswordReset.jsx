@@ -1,48 +1,62 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { Box, Input, Button, FormControl, FormLabel, Heading, Text } from '@chakra-ui/react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import {
+  Box,
+  Input,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
+import axios from "axios";
 
 function OTP() {
-  const [otp, setOTP] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [otp, setOTP] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [step, setStep] = useState(1);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const email = queryParams.get('email');
+  const email = queryParams.get("email");
   const navigate = useNavigate();
 
   const checkOTP = async () => {
     try {
-      const response = await axios.post("http://localhost:8001/checkOTP", { otp, email });
+      const response = await axios.post(
+        "https://api.prabhatanvik.shop/checkOTP",
+        { otp, email }
+      );
       console.log(response.data);
       if (response.data.success) {
-        setMessage('');
+        setMessage("");
         setStep(2);
       } else {
         setMessage(response.data.message);
       }
     } catch (error) {
-      console.error('Error checking OTP:', error);
-      setMessage('An error occurred while checking OTP');
+      console.error("Error checking OTP:", error);
+      setMessage("An error occurred while checking OTP");
     }
   };
 
   const resetPass = async () => {
     try {
-      const response = await axios.post("http://localhost:8001/resetPass", { newPassword, email });
+      const response = await axios.post(
+        "https://api.prabhatanvik.shop/resetPass",
+        { newPassword, email }
+      );
       console.log(response.data);
       if (response.data.success) {
-        setMessage('Password changed successfully.');
-        navigate('/');
+        setMessage("Password changed successfully.");
+        navigate("/");
       } else {
         setMessage(response.data.message);
       }
     } catch (error) {
-      console.error('Error resetting password:', error);
-      setMessage('An error occurred while resetting the password');
+      console.error("Error resetting password:", error);
+      setMessage("An error occurred while resetting the password");
     }
   };
 
@@ -90,7 +104,10 @@ function OTP() {
         </Button>
       </form>
 
-      <Text mt={4} color={message.includes('successfully') ? 'green.500' : 'red.500'}>
+      <Text
+        mt={4}
+        color={message.includes("successfully") ? "green.500" : "red.500"}
+      >
         {message}
       </Text>
     </Box>

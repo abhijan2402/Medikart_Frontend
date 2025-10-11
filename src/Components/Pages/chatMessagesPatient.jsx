@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ScrollToButtom from 'react-scroll-to-bottom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import ScrollToButtom from "react-scroll-to-bottom";
 import "../../App.css";
 import { useParams } from "react-router-dom";
-import io from 'socket.io-client';
-const socket = io.connect(process.env.REACT_APP_API_URL || "http://localhost:8001");
+import io from "socket.io-client";
+const socket = io.connect(
+  process.env.REACT_APP_API_URL || "http://localhost:8001"
+);
 
-
-function ChatMessages({ socket}) {
+function ChatMessages({ socket }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [doctorList, setDoctorList] = useState([]);
@@ -16,15 +17,16 @@ function ChatMessages({ socket}) {
   const { username } = useParams();
   const [chatOpen, setChatOpen] = useState(false);
 
-
   useEffect(() => {
     const fetchDoctorList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8001/patient/getDoctorUsername/${username}`);
-        console.log(response.data)
+        const response = await axios.get(
+          `https://api.prabhatanvik.shop/patient/getDoctorUsername/${username}`
+        );
+        console.log(response.data);
         setDoctorList(response.data.pharmacistUsernames); // Correct property name
-    } catch (error) {
-        console.error('Error fetching doctor list:', error);
+      } catch (error) {
+        console.error("Error fetching doctor list:", error);
       }
     };
 
@@ -33,25 +35,24 @@ function ChatMessages({ socket}) {
 
   const handleDoctorClick = async (doctorUsername) => {
     try {
-      const response = await axios.post(`http://localhost:8001/patient/Chat/${username}/${doctorUsername}`);
-      console.log(response.data)
+      const response = await axios.post(
+        `https://api.prabhatanvik.shop/patient/Chat/${username}/${doctorUsername}`
+      );
+      console.log(response.data);
 
       const { room: chatRoom } = response.data;
       const { messages: messageList } = response.data;
-      socket.emit("join_room",chatRoom);
+      socket.emit("join_room", chatRoom);
       setSelectedDoctor(doctorUsername);
       setRoom(chatRoom);
       setMessageList(messageList);
-      
-      console.log(messageList)
-      setChatOpen(true);
 
-      
+      console.log(messageList);
+      setChatOpen(true);
     } catch (error) {
-      console.error('Error joining chat room for patient:', error);
+      console.error("Error joining chat room for patient:", error);
     }
   };
-
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
@@ -59,7 +60,8 @@ function ChatMessages({ socket}) {
         room: room,
         sender: username,
         message: currentMessage,
-        timestamp: new Date(Date.now()).getHours() +
+        timestamp:
+          new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
       };
@@ -69,13 +71,15 @@ function ChatMessages({ socket}) {
       console.log(username);
       console.log(selectedDoctor);
       console.log(currentMessage);
-      console.log("mariomaaa")
+      console.log("mariomaaa");
 
-      const response = await axios.post(`http://localhost:8001/patient/sendMessage/${username}/${selectedDoctor}`, {
-        message: currentMessage
-      });
-      console.log("mariomaaa")
-      
+      const response = await axios.post(
+        `https://api.prabhatanvik.shop/patient/sendMessage/${username}/${selectedDoctor}`,
+        {
+          message: currentMessage,
+        }
+      );
+      console.log("mariomaaa");
     }
   };
 
@@ -91,61 +95,62 @@ function ChatMessages({ socket}) {
         <h2>Pharmacists</h2>
         <ul className="doctor-list">
           {doctorList.map((doctorUsername) => (
-          <li
-            key={doctorUsername}
-            onClick={() => handleDoctorClick(doctorUsername)}
-            className={selectedDoctor === doctorUsername ? "selected" : ""}
-            style={{ cursor: 'pointer' }}
-          >
-            {doctorUsername}
-          </li>
-        ))}
+            <li
+              key={doctorUsername}
+              onClick={() => handleDoctorClick(doctorUsername)}
+              className={selectedDoctor === doctorUsername ? "selected" : ""}
+              style={{ cursor: "pointer" }}
+            >
+              {doctorUsername}
+            </li>
+          ))}
         </ul>
       </div>
+      {chatOpen && (
+        <div className="chat-window">
+          <div className="chat-header">
+            <p>Live Chat</p>
+          </div>
+          <div className="chat-body">
+            <ScrollToButtom className="message-container">
+              {messageList.map((messageContent) => {
+                return (
+                  <div
+                    className="message"
+                    id={username === messageContent.sender ? "other" : "you"}
+                  >
+                    <div>
+                      <div className="message-content">
+                        <p>{messageContent.message}</p>
+                      </div>
+                      <div className="message-meta">
+                        <p id="author">{messageContent.sender}</p>
 
-      {chatOpen&&(<div className="chat-window">
-        <div className="chat-header">
-          <p>Live Chat</p>
-        </div>
-        <div className="chat-body">
-          <ScrollToButtom className="message-container">
-            {messageList.map((messageContent) => {
-              return(
-                <div
-                className="message"
-                id={username === messageContent.sender ? "other" : "you"}
-              >
-                <div>
-                  <div className="message-content">
-                    <p>{messageContent.message}</p>
+                        <p id="time">{messageContent.timestamp}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="message-meta">
-                  <p id="author">{messageContent.sender}</p>
-                  
-                    <p id="time">{messageContent.timestamp}</p>
-                  </div>
-                </div>
-              </div>
-              );
-})}
-          </ScrollToButtom>
+                );
+              })}
+            </ScrollToButtom>
+          </div>
+          <div className="chat-footer">
+            <input
+              type="text"
+              value={currentMessage}
+              placeholder="Hey.."
+              onChange={(event) => {
+                setCurrentMessage(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                event.key === "Enter" && sendMessage();
+              }}
+            />
+            <button onClick={sendMessage}> &#9658;</button>
+          </div>
         </div>
-        <div className="chat-footer">
-          <input
-            type="text"
-            value={currentMessage}
-            placeholder="Hey.."
-            onChange={(event) => {
-              setCurrentMessage(event.target.value);
-            }}
-            onKeyPress={(event) => {
-              event.key === "Enter" && sendMessage();
-            }}
-          />
-          <button onClick={sendMessage}> &#9658;</button>
-        </div>
-      </div>
-       )} </div>
+      )}{" "}
+    </div>
   );
 }
 

@@ -89,16 +89,19 @@ export const Cart = () => {
   const handleCheckout = async () => {
     setErrorMessage("");
     setIsModalOpen(true);
-    const response = await axios.get("http://localhost:8001/patient/Address", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      "https://api.prabhatanvik.shop/patient/Address",
+      {
+        withCredentials: true,
+      }
+    );
     setAddress(response.data);
   };
 
   useEffect(() => {
     const getCart = async () => {
       try {
-        const response = await axios.get("http://localhost:8001/cart", {
+        const response = await axios.get("https://api.prabhatanvik.shop/cart", {
           withCredentials: true,
         });
         setCart(response.data);
@@ -117,7 +120,7 @@ export const Cart = () => {
     try {
       setErrorMessage("");
       const response = await axios.post(
-        "http://localhost:8001/cart/update",
+        "https://api.prabhatanvik.shop/cart/update",
         { productId: productId, quantity: newQuantity },
         { withCredentials: true }
       );
@@ -132,7 +135,7 @@ export const Cart = () => {
     setIsDeleting(true);
     try {
       const response = await axios.delete(
-        `http://localhost:8001/cart/${productId}`,
+        `https://api.prabhatanvik.shop/cart/${productId}`,
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -164,7 +167,7 @@ export const Cart = () => {
     console.log(order_id);
     try {
       const res = await axios.post(
-        `http://localhost:8001/payment/verify`,
+        `https://api.prabhatanvik.shop/payment/verify`,
         {
           orderId: order_id,
         },
@@ -186,7 +189,7 @@ export const Cart = () => {
     try {
       // 1️⃣ Call backend to create order
       const response = await axios.post(
-        "http://localhost:8001/payment/create-order",
+        "https://api.prabhatanvik.shop/payment/create-order",
         {
           customerName: "abc",
           customerEmail: "abc@gmail.com",
@@ -233,7 +236,7 @@ export const Cart = () => {
     } else {
       if (selectedPayment === "cash") {
         const response = await axios.post(
-          "http://localhost:8001/order/orderCash",
+          "https://api.prabhatanvik.shop/order/orderCash",
           { address: selectedAddress },
           { withCredentials: true }
         );
@@ -244,7 +247,7 @@ export const Cart = () => {
       } else {
         if (selectedPayment === "wallet") {
           const response = await axios.post(
-            "http://localhost:8001/order/orderWallet",
+            "https://api.prabhatanvik.shop/order/orderWallet",
             { address: selectedAddress },
             { withCredentials: true }
           );
@@ -262,7 +265,7 @@ export const Cart = () => {
             // navigate("/completion");
           }
         } else {
-            handlePayment();
+          handlePayment();
 
           // navigate(`/home/creditPayment/${selectedAddress}`);
         }
@@ -302,7 +305,7 @@ export const Cart = () => {
           ""
         );
       const response = await axios.post(
-        "http://localhost:8001/patient/addDeliveryAddress",
+        "https://api.prabhatanvik.shop/patient/addDeliveryAddress",
         { address: newAddress },
         { withCredentials: true }
       );

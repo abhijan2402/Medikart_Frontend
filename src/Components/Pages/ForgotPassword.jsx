@@ -1,28 +1,31 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Flex, Input, Button, Heading, Text } from '@chakra-ui/react';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Flex, Input, Button, Heading, Text } from "@chakra-ui/react";
+import axios from "axios";
 
 function ForgotPassword() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const back =()=>  navigate(-1);
+  const back = () => navigate(-1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8001/sendOTP", { email });
+      const response = await axios.post(
+        "https://api.prabhatanvik.shop/sendOTP",
+        { email }
+      );
       console.log(response);
       if (response.data === "password reset otp sent to your email account") {
-        setMessage('OTP sent successfully. Check your email for the OTP.');
+        setMessage("OTP sent successfully. Check your email for the OTP.");
         navigate(`/PasswordReset?email=${email}`);
       } else {
-        setMessage('Failed to send OTP. Please check your email address.');
+        setMessage("Failed to send OTP. Please check your email address.");
       }
     } catch (error) {
-      console.error('Error sending OTP:', error);
-      setMessage('An error occurred while sending OTP.');
+      console.error("Error sending OTP:", error);
+      setMessage("An error occurred while sending OTP.");
     }
   };
 
@@ -43,12 +46,14 @@ function ForgotPassword() {
           <Button colorScheme="teal" type="submit">
             Send Reset Email
           </Button>
-          <br>
-          </br>
           <br></br>
-       <Button onClick={back}>back</Button>
+          <br></br>
+          <Button onClick={back}>back</Button>
         </form>
-        <Text mt={4} color={message.includes('successfully') ? 'green.500' : 'red.500'}>
+        <Text
+          mt={4}
+          color={message.includes("successfully") ? "green.500" : "red.500"}
+        >
           {message}
         </Text>
       </Box>

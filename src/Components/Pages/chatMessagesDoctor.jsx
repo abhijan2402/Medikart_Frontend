@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ScrollToButtom from 'react-scroll-to-bottom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import ScrollToButtom from "react-scroll-to-bottom";
 import "../../App.css";
 import { useParams } from "react-router-dom";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:8001");
 
@@ -15,7 +15,7 @@ function ChatMessages({ socket }) {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [room, setRoom] = useState("");
-  const [doctorRoom, setDoctorRoom] = useState('');
+  const [doctorRoom, setDoctorRoom] = useState("");
   const { username } = useParams();
   const [chatOpen, setChatOpen] = useState(false);
   const [doctorChatOpen, setDoctorChatOpen] = useState(false);
@@ -24,19 +24,23 @@ function ChatMessages({ socket }) {
   useEffect(() => {
     const fetchPatientList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8001/pharmacist/getPatientUsername/${username}`);
+        const response = await axios.get(
+          `https://api.prabhatanvik.shop/pharmacist/getPatientUsername/${username}`
+        );
         setPatientList(response.data.patientUsernames);
       } catch (error) {
-        console.error('Error fetching doctor list:', error);
+        console.error("Error fetching doctor list:", error);
       }
     };
     const fetchDoctorList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8001/pharmacist/getDoctorUsername/${username}`);
+        const response = await axios.get(
+          `https://api.prabhatanvik.shop/pharmacist/getDoctorUsername/${username}`
+        );
         setDoctorList(response.data.doctortUsernames);
         console.log(doctorList);
       } catch (error) {
-        console.error('Error fetching Doctor list:', error);
+        console.error("Error fetching Doctor list:", error);
       }
     };
     fetchDoctorList();
@@ -45,8 +49,9 @@ function ChatMessages({ socket }) {
 
   const handleDoctorClick = async (patientUsername) => {
     try {
-
-      const response = await axios.post(`http://localhost:8001/pharmacist/ChatDoctor/${username}/${patientUsername}`);
+      const response = await axios.post(
+        `https://api.prabhatanvik.shop/pharmacist/ChatDoctor/${username}/${patientUsername}`
+      );
       console.log("mmmmmmm");
       const { room: chatRoom } = response.data;
       const { messages: messageList } = response.data;
@@ -57,24 +62,26 @@ function ChatMessages({ socket }) {
       setMessageList(messageList);
       console.log(messageList);
       setChatOpen(true);
-      setActiveChatType('patient');
+      setActiveChatType("patient");
     } catch (error) {
-      console.error('Error joining chat room for patient:', error);
+      console.error("Error joining chat room for patient:", error);
     }
   };
   const handlePharmacistClick = async (doctorUsername) => {
     try {
-      const response = await axios.post(`http://localhost:8001/pharmacist/ChatDoctor2/${username}/${doctorUsername}`);
+      const response = await axios.post(
+        `https://api.prabhatanvik.shop/pharmacist/ChatDoctor2/${username}/${doctorUsername}`
+      );
       const { room: chatRoom, messages: messageList } = response.data;
-      socket.emit('join_room', chatRoom);
+      socket.emit("join_room", chatRoom);
 
       setSelectedDoctor(doctorUsername);
       setDoctorRoom(chatRoom);
       setMessageList(messageList);
       setDoctorChatOpen(true);
-      setActiveChatType('doctor');
+      setActiveChatType("doctor");
     } catch (error) {
-      console.error('Error joining chat room for doctor:', error);
+      console.error("Error joining chat room for doctor:", error);
     }
   };
 
@@ -84,7 +91,8 @@ function ChatMessages({ socket }) {
         room: room,
         sender: username,
         message: currentMessage,
-        timestamp: new Date(Date.now()).getHours() +
+        timestamp:
+          new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
       };
@@ -92,27 +100,36 @@ function ChatMessages({ socket }) {
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
 
-      const response = await axios.post(`http://localhost:8001/pharmacist/sendMessage/${selectedPatient}/${username}`, {
-        message: currentMessage
-      });
+      const response = await axios.post(
+        `https://api.prabhatanvik.shop/pharmacist/sendMessage/${selectedPatient}/${username}`,
+        {
+          message: currentMessage,
+        }
+      );
     }
   };
 
   const sendMessage2 = async () => {
-    if (currentMessage !== '') {
+    if (currentMessage !== "") {
       const messageData = {
         room: doctorRoom,
         sender: username,
         message: currentMessage,
-        timestamp: new Date(Date.now()).getHours() + ':' + new Date(Date.now()).getMinutes(),
+        timestamp:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
       };
-      await socket.emit('send_message', messageData);
+      await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
-      setCurrentMessage('');
+      setCurrentMessage("");
 
-      const response = await axios.post(`http://localhost:8001/pharmacist/sendMessage2/${selectedDoctor}/${username}`, {
-        message: currentMessage,
-      });
+      const response = await axios.post(
+        `https://api.prabhatanvik.shop/pharmacist/sendMessage2/${selectedDoctor}/${username}`,
+        {
+          message: currentMessage,
+        }
+      );
     }
   };
 
@@ -132,7 +149,7 @@ function ChatMessages({ socket }) {
               key={patientUsername}
               onClick={() => handleDoctorClick(patientUsername)}
               className={selectedPatient === patientUsername ? "selected" : ""}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               {patientUsername}
             </li>
@@ -144,17 +161,16 @@ function ChatMessages({ socket }) {
             <li
               key={doctorUsername}
               onClick={() => handlePharmacistClick(doctorUsername)}
-              className={selectedDoctor === doctorUsername ? 'selected' : ''}
-              style={{ cursor: 'pointer' }}
+              className={selectedDoctor === doctorUsername ? "selected" : ""}
+              style={{ cursor: "pointer" }}
             >
               {doctorUsername}
             </li>
           ))}
         </ul>
-        
       </div>
-    
-      {activeChatType === 'patient' &&chatOpen && (
+
+      {activeChatType === "patient" && chatOpen && (
         <div className="chat-window">
           <div className="chat-header">
             <p>Live Chat</p>
@@ -195,7 +211,7 @@ function ChatMessages({ socket }) {
           </div>
         </div>
       )}
-       {activeChatType === 'doctor' &&doctorChatOpen && (
+      {activeChatType === "doctor" && doctorChatOpen && (
         <div className="chat-window">
           <div className="chat-header">
             <p>Live Chat</p>
@@ -206,7 +222,7 @@ function ChatMessages({ socket }) {
                 <div
                   key={index}
                   className="message"
-                  id={username === messageContent.sender ? 'other' : 'you'}
+                  id={username === messageContent.sender ? "other" : "you"}
                 >
                   <div>
                     <div className="message-content">
@@ -230,15 +246,13 @@ function ChatMessages({ socket }) {
                 setCurrentMessage(event.target.value);
               }}
               onKeyPress={(event) => {
-                event.key === 'Enter' && sendMessage2();
+                event.key === "Enter" && sendMessage2();
               }}
             />
             <button onClick={sendMessage2}> &#9658;</button>
           </div>
         </div>
       )}
-
-
     </div>
   );
 }
