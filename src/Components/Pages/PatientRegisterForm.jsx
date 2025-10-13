@@ -67,7 +67,7 @@ const PatientRegisterForm = () => {
     e.preventDefault();
     try {
       const response = await Axios.post(
-        "https://api.prabhatanvik.shop/Patientregister",
+        "https://api.prabhatanvik.shop/auth/Patientregister",
         formData
       );
       if (response.data.message !== "User already exists") {

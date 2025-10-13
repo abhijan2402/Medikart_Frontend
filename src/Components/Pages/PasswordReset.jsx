@@ -25,7 +25,7 @@ function OTP() {
   const checkOTP = async () => {
     try {
       const response = await axios.post(
-        "https://api.prabhatanvik.shop/checkOTP",
+        "https://api.prabhatanvik.shop/auth/checkOTP",
         { otp, email }
       );
       console.log(response.data);
