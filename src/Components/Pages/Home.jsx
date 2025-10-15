@@ -73,6 +73,8 @@ export const Home = () => {
 
   useEffect(() => {
     const verifyCookie = async () => {
+      console.log("cookies",cookies)
+      console.log("cookies token", cookies?.token);
       if (!cookies.token) {
         navigate("/login");
       }
