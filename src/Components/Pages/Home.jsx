@@ -77,7 +77,7 @@ export const Home = () => {
         navigate("/login");
       }
       const { data } = await axios.post(
-        "http://localhost:8001",
+        "https://api.prabhatanvik.shop",
         {},
         { withCredentials: true }
       );
