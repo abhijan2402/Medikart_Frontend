@@ -73,9 +73,6 @@ function App() {
         <Route path="/chatwithdoctor/:username" element={<ChatMessages socket={socket} />} />
         <Route path="/chatwithpatient/:username" element={<ChatMessagesDoctor socket={socket} />} />
         <Route path="/salesReport" element={<SalesReport/>}/>
-
-      
-     
       </Routes>
     </div>
   );

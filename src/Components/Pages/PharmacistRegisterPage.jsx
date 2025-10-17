@@ -147,8 +147,14 @@ const PharmacistRegisterPage = () => {
               }}
             >
               <h3 className="text-uppercase fw-bold pt-5 ps-5">
+                Test Form Registration
+              </h3>
+              {/*
+              
+              <h3 className="text-uppercase fw-bold pt-5 ps-5">
                 Pharmacist Registration Form
               </h3>
+              */}
 
               <MDBRow className="g-0 ">
                 <MDBCol
