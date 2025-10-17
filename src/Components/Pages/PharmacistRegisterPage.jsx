@@ -72,7 +72,7 @@ const PharmacistRegisterPage = () => {
     }
     try {
       const response = await axios.post(
-        "https://api.prabhatanvik.shop/doc_register",
+        "https://api.prabhatanvik.shop/pharmacist/doc_register",
         payload,
         {
           headers: {
