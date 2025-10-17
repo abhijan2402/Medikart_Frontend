@@ -72,7 +72,7 @@ const PharmacistRegisterPage = () => {
     }
     try {
       const response = await axios.post(
-        "https://api.prabhatanvik.shop/pharmacist/doc_register",
+        "https://api.prabhatanvik.shop/auth/doc_register",
         payload,
         {
           headers: {
@@ -146,15 +146,11 @@ const PharmacistRegisterPage = () => {
                 backdropFilter: "blur(5px)",
               }}
             >
-              <h3 className="text-uppercase fw-bold pt-5 ps-5">
-                Test Form Registration
-              </h3>
-              {/*
+             
               
               <h3 className="text-uppercase fw-bold pt-5 ps-5">
                 Pharmacist Registration Form
               </h3>
-              */}
 
               <MDBRow className="g-0 ">
                 <MDBCol
