@@ -61,7 +61,7 @@ return (
           height="100"
           Width="50"
           style={{ objectFit: 'cover',minHeight:'400px', maxHeight: '400px' }}  
-          
+          src={medicine?.Image}
         />
       </Link>
       <div className="card-body">
