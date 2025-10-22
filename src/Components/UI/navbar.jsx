@@ -25,7 +25,7 @@ export const Navbar = () => {
       }
     };
     getCart();
-  }, [cart]);
+  }, []);
   function toggleDrawer() {
     setOpenedDrawer(!openedDrawer);
   }
