@@ -193,7 +193,7 @@ export const Cart = () => {
         {
           customerName: "abc",
           customerEmail: "abc@gmail.com",
-          customerPhone: "+91*********",
+          customerPhone: "9785486754",
           amount: amount,
         },
         { withCredentials: true }
