@@ -185,7 +185,7 @@ export const Cart = () => {
   const handlePayment = async () => {
     // alert("paymet");
     setLoading(true);
-
+    const amount = cart.bill - (cart.discount * cart.bill).toFixed(2);
     try {
       // 1️⃣ Call backend to create order
       const response = await axios.post(
@@ -193,8 +193,8 @@ export const Cart = () => {
         {
           customerName: "abc",
           customerEmail: "abc@gmail.com",
-          customerPhone: "9999999999",
-          amount: 1,
+          customerPhone: "+91*********",
+          amount: amount,
         },
         { withCredentials: true }
       );
