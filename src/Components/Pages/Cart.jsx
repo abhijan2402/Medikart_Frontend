@@ -89,12 +89,9 @@ export const Cart = () => {
   const handleCheckout = async () => {
     setErrorMessage("");
     setIsModalOpen(true);
-    const response = await axios.get(
-      "https://api.prabhatanvik.shop/patient/Address",
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axios.get("https://api.prabhatanvik.shop/patient/Address", {
+      withCredentials: true,
+    });
     setAddress(response.data);
   };
 
@@ -104,13 +101,19 @@ export const Cart = () => {
         const response = await axios.get("https://api.prabhatanvik.shop/cart", {
           withCredentials: true,
         });
-        setCart(response.data);
+        console.log(response);
+        if (response?.statusText === "OK") {
+          toast.success("Cart Item Fetched Successfully", {
+            position: "bottom-left",
+          });
+          setCart(response.data);
+        }
       } catch (err) {
         console.log(err);
       }
     };
     getCart();
-  });
+  }, []);
   const handleQuantityChange = async (productId, newQuantity) => {
     if (newQuantity < 1) {
       // Display an error message or prevent the update action here.
@@ -139,7 +142,7 @@ export const Cart = () => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        // Item was successfully deleted
+        // Item was successfully deleted  https://api.prabhatanvik.shop
         setCart(response.data);
       }
     } catch (err) {
@@ -164,7 +167,7 @@ export const Cart = () => {
   }, []);
 
   const verifyPayment = async (order_id) => {
-    console.log(order_id);
+    // console.log(order_id);
     try {
       const res = await axios.post(
         `https://api.prabhatanvik.shop/payment/verify`,
@@ -537,7 +540,7 @@ export const Cart = () => {
                                 className="mb-4 d-flex justify-content-between align-items-center"
                               >
                                 <MDBCol md="2" lg="2" xl="2">
-                                  <MDBCardImage
+                                  {/* <MDBCardImage
                                     src={`data:${
                                       item?.image?.contentType
                                     };base64, ${Buffer.from(
@@ -546,7 +549,7 @@ export const Cart = () => {
                                     fluid
                                     className="rounded-3"
                                     alt={item.name}
-                                  />
+                                  /> */}
                                 </MDBCol>
                                 <MDBCol md="3" lg="3" xl="3">
                                   <MDBTypography
@@ -928,6 +931,7 @@ export const Cart = () => {
           </MDBContainer>
         </section>
       </div>
+      <ToastContainer />
     </>
   );
 };

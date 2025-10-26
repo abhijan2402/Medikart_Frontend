@@ -62,7 +62,7 @@ const MedicineItem = ({ medicine, addToCart }) => {
     <div className="col">
       <div className="card shadow-sm">
         <Link to={`/medicine/details/${medicine._id}`} href="!#" replace>
-          <img
+          {/* <img
             className="card-img-top bg-dark cover"
             height="100"
             Width="50"
@@ -73,15 +73,45 @@ const MedicineItem = ({ medicine, addToCart }) => {
             }}
             alt={medicine.name}
             src={base64Src}
-          />
+          /> */}
         </Link>
         <div className="card-body">
-          <h5 className="card-title text-center text-dark text-truncate">
-            {medicine.Name}
-          </h5>
-          <p className="card-text text-center text-muted mb-0">
-            $ {medicine.Price}
-          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h5 className="card-title text-center text-dark text-truncate">
+              {medicine.Name}
+            </h5>
+            <p className="card-text text-center text-muted mb-0">
+              $ {medicine.Price}
+            </p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontStyle:"italic"
+            }}
+          >
+            <p
+              style={{ fontSize: "12px" }}
+              className="card-text text-sm text-start text-muted mb-0"
+            >
+              Item Left:
+            </p>
+            <p
+              style={{ fontSize: "12px" }}
+              className="card-text text-sm text-start text-muted mb-0"
+            >
+              {medicine.Quantity}
+            </p>
+          </div>
+
           <div className="d-grid d-block">
             {medicine.Quantity > 0 ? (
               <button

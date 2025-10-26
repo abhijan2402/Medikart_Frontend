@@ -7,7 +7,7 @@ import "./button.css";
 import { useNavigate } from "react-router-dom";
 
 import "../UI/navbar.css";
-export const Navbar = () => {
+export const Navbar = ({ cartItemCount }) => {
   const [cart, setCart] = useState(null);
 
   const [openedDrawer, setOpenedDrawer] = useState(false);
@@ -40,7 +40,7 @@ export const Navbar = () => {
           <button type="button" className="btn btn-outline-dark">
             <FontAwesomeIcon icon={["fas", "shopping-cart"]} />
             <span className="ms-3 badge rounded-pill bg-dark">
-              {cart ? cart.items.length : 0}
+              {cartItemCount }
             </span>
           </button>
           <button

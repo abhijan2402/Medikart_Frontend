@@ -25,7 +25,7 @@ import "../UI/button.css";
 import { useNavigate } from "react-router-dom";
 import "../../index.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Navigation from "../UI/Navigation";
 import "../UI/innerPages.css";
 import Sidebar from "../Pages/side";
@@ -83,6 +83,9 @@ export function MedicineList() {
     Prescription();
   }, []);
 
+  const [cartItemCount, setCartItemCount] = useState(0);
+  console.log(cartItemCount);
+
   const addToCart = async (medicine, quantity) => {
     try {
       const response = await axios.post(
@@ -93,7 +96,13 @@ export function MedicineList() {
         },
         { withCredentials: true }
       );
-
+      console.log(response);
+      setCartItemCount(response?.data?.items?.length);
+      if (response?.statusText === "Created") {
+        toast.success("Item Added to Cart", {
+          position: "bottom-left",
+        });
+      }
       // Process the response or handle any other logic here
       setAddToCartQueue((prevQueue) =>
         prevQueue.filter((item, index) => index !== 0)
@@ -108,6 +117,20 @@ export function MedicineList() {
       );
     }
   };
+
+  useEffect(() => {
+    const getCart = async () => {
+      try {
+        const response = await axios.get("https://api.prabhatanvik.shop/cart", {
+          withCredentials: true,
+        });
+        setCartItemCount(response?.data?.items?.length);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCart();
+  }, []);
 
   // Use useEffect to process the queue when it changes
   useEffect(() => {
@@ -154,6 +177,7 @@ export function MedicineList() {
     setSelectedMedicineId(medicineId);
   };
   const prescriptionMed = async (prescID) => {
+    alert("asdnl");
     console.log(prescID);
     const response = await axios.post(
       "https://api.prabhatanvik.shop/patient/PrescribedMedicene",
@@ -211,12 +235,15 @@ export function MedicineList() {
   //     </div>
   //   </Box>
   // );
+
+  console.log(addToCartQueue);
+
   return (
     <>
       <Navigation pagetitle={"Medicine"} />
       <Sidebar />
       <div className="content">
-        <Navbar />
+        <Navbar cartItemCount={cartItemCount} />
 
         <div className="container mt-5 py-4 px-xl-5">
           <div className="row mb-3 d-block d-lg-none">
@@ -306,6 +333,7 @@ export function MedicineList() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
