@@ -540,7 +540,7 @@ export const Cart = () => {
                                 className="mb-4 d-flex justify-content-between align-items-center"
                               >
                                 <MDBCol md="2" lg="2" xl="2">
-                                  {/* <MDBCardImage
+                                  <MDBCardImage
                                     src={`data:${
                                       item?.image?.contentType
                                     };base64, ${Buffer.from(
@@ -549,7 +549,7 @@ export const Cart = () => {
                                     fluid
                                     className="rounded-3"
                                     alt={item.name}
-                                  /> */}
+                                  />
                                 </MDBCol>
                                 <MDBCol md="3" lg="3" xl="3">
                                   <MDBTypography

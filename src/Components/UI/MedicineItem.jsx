@@ -62,7 +62,7 @@ const MedicineItem = ({ medicine, addToCart }) => {
     <div className="col">
       <div className="card shadow-sm">
         <Link to={`/medicine/details/${medicine._id}`} href="!#" replace>
-          {/* <img
+          <img
             className="card-img-top bg-dark cover"
             height="100"
             Width="50"
@@ -73,7 +73,7 @@ const MedicineItem = ({ medicine, addToCart }) => {
             }}
             alt={medicine.name}
             src={base64Src}
-          /> */}
+          />
         </Link>
         <div className="card-body">
           <div
