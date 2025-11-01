@@ -89,9 +89,12 @@ export const Cart = () => {
   const handleCheckout = async () => {
     setErrorMessage("");
     setIsModalOpen(true);
-    const response = await axios.get("https://api.prabhatanvik.shop/patient/Address", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      "https://api.prabhatanvik.shop/patient/Address",
+      {
+        withCredentials: true,
+      }
+    );
     setAddress(response.data);
   };
 
@@ -161,7 +164,7 @@ export const Cart = () => {
 
   useEffect(() => {
     const initializeSDK = async () => {
-      cashfreeRef.current = await load({ mode: "sandbox" });
+      cashfreeRef.current = await load({ mode: "production" });
     };
     initializeSDK();
   }, []);
@@ -201,6 +204,8 @@ export const Cart = () => {
         },
         { withCredentials: true }
       );
+
+      console.log(response);
 
       const { order_id, payment_session_id } = response.data?.data;
       console.log("Order created:", order_id, payment_session_id);
@@ -540,16 +545,16 @@ export const Cart = () => {
                                 className="mb-4 d-flex justify-content-between align-items-center"
                               >
                                 <MDBCol md="2" lg="2" xl="2">
-                                  <MDBCardImage
-                                    src={`data:${
-                                      item?.image?.contentType
-                                    };base64, ${Buffer.from(
-                                      item?.image?.data
-                                    ).toString("base64")}`}
-                                    fluid
-                                    className="rounded-3"
-                                    alt={item.name}
-                                  />
+                                    <MDBCardImage
+                                      src={`data:${
+                                        item?.image?.contentType
+                                      };base64, ${Buffer.from(
+                                        item?.image?.data
+                                      ).toString("base64")}`}
+                                      fluid
+                                      className="rounded-3"
+                                      alt={item.name}
+                                    />
                                 </MDBCol>
                                 <MDBCol md="3" lg="3" xl="3">
                                   <MDBTypography
