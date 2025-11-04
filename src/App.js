@@ -29,7 +29,7 @@ import io from 'socket.io-client';
 import LandingPage from './Components/Pages/LandingPage.jsx';
 
 
-const socket = io.connect("https://api.prabhatanvik.shop");
+// const socket = io.connect("https://api.prabhatanvik.shop");
 
 function App() {
   
