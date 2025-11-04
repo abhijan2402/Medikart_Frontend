@@ -78,11 +78,11 @@ export const Home = () => {
       if (!cookies.token) {
         navigate("/login");
       }
-      // const { data } = await axios.post(
-      //   "https://api.prabhatanvik.shop",
-      //   {},
-      //   { withCredentials: true }
-      // );
+      const { data } = await axios.post(
+        "https://api.prabhatanvik.shop",
+        {},
+        { withCredentials: true }
+      );
       const { status, user } = data;
       setUsername(user);
       if (status) {
